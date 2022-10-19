@@ -1,8 +1,12 @@
 package productor;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Main {
 
 	public static void main(String[] args) {
+		ReentrantLock latch = new ReentrantLock();
+
 		int rice = 0;
 		int bean = 0;
 		int corn = 0;
@@ -12,9 +16,9 @@ public class Main {
 
 		Shop shop = new Shop(riceContainer, beanContainer, cornContainer);
 
-		Producer riceProducer = new Producer("arroz", 1, shop);
-		Producer beanProducer = new Producer("frijol", 5, shop);
-		Producer cornProducer = new Producer("maiz", 10, shop);
+		Producer riceProducer = new Producer(1, "arroz", 1, "frijol", 2, shop, latch);
+		Producer beanProducer = new Producer(2, "frijol", 4, "maiz", 2, shop, latch);
+		Producer cornProducer = new Producer(3, "maiz", 2, "arroz", 3, shop, latch);
 
 		Buyer b1 = new Buyer("Diego", 4, 0, 1, true, shop);
 		Buyer b2 = new Buyer("Itzel", 3, 8, 0, shop);

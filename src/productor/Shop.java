@@ -18,9 +18,12 @@ public class Shop {
 
 	}
 
-	public void addProduct(String product, int quantity) {
+	public void addProduct(String product, int quantity, int noProducer) {
 		Container container = getContainer(product);
-		container.products += quantity;
+		if (container.products < 10) {
+			container.products += quantity;
+			System.out.println("Producer " + noProducer + " envio " + quantity + " toneladas de " + product);
+		}
 		if (container.products >= 10) {
 			container.products = 10;
 		}
