@@ -23,38 +23,26 @@ public class Producer extends Thread {
 	}
 
 	public synchronized void run() {
-		int vecesEjecutadas = 0;
 		while (true) {
-			if (vecesEjecutadas == 0) {
-				latch.lock();
-				fill();
-				vecesEjecutadas++;
-				latch.unlock();
-				try {
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			} else if (Math.round(Math.random()) == 0) {
-				vecesEjecutadas = 0;
+			latch.lock();
+			fill();
+			latch.unlock();
+			try {
+				sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 
 	public void fill() {
-		shop.addProduct(product, productionCapacity, noProducer);
-		shop.addProduct(product2, productionCapacity2, noProducer);
+		System.out.println("Productor " + noProducer + " entró a surtir.");
+		shop.addProduct(product, productionCapacity);
+		shop.addProduct(product2, productionCapacity2);
+		System.out.println("Productor " + noProducer + " terminó de surtir.");
 		synchronized (shop.fill) {
 			if (shop.areContainersFull()) {
 				shop.fill.notify();
-			}
-			if (shop.getContainer(product).isFull()) {
-				try {
-					shop.fill.wait();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 		}
 	}

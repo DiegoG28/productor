@@ -16,9 +16,10 @@ public class Main {
 
 		Shop shop = new Shop(riceContainer, beanContainer, cornContainer);
 
-		Producer riceProducer = new Producer(1, "arroz", 1, "frijol", 2, shop, latch);
-		Producer beanProducer = new Producer(2, "frijol", 4, "maiz", 2, shop, latch);
-		Producer cornProducer = new Producer(3, "maiz", 2, "arroz", 3, shop, latch);
+		Producer p1 = new Producer(1, "arroz", 1, "frijol", 2, shop, latch);
+		Producer p2 = new Producer(2, "frijol", 1, "maiz", 2, shop, latch);
+		Producer p3 = new Producer(3, "maiz", 2, "arroz", 3, shop, latch);
+		Producer p4 = new Producer(4, "frijol", 1, "arroz", 1, shop, latch);
 
 		Buyer b1 = new Buyer("Diego", 4, 0, 1, true, shop);
 		Buyer b2 = new Buyer("Itzel", 3, 8, 0, shop);
@@ -27,9 +28,11 @@ public class Main {
 		Buyer b5 = new Buyer("Aixa", 3, 0, 2, shop);
 		Buyer b6 = new Buyer("Carolina", 8, 2, 7, shop);
 
-		riceProducer.start();
-		beanProducer.start();
-		cornProducer.start();
+		p1.start();
+		p2.start();
+		p3.start();
+		p4.start();
+
 		b1.start();
 		b2.start();
 		b3.start();
