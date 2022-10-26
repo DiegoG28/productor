@@ -7,29 +7,34 @@ public class Buyer extends Thread {
 	int cornQuantity = 0;
 	Boolean isFirstTurn = false;
 	Shop shop;
+	Season season;
 
-	public Buyer(String name, int riceQuantity, int beanQuantity, int cornQuantity, Shop shop) {
+	public Buyer(String name, int riceQuantity, int beanQuantity, int cornQuantity, Shop shop, Season season) {
 		this.name = name;
 		this.riceQuantity = riceQuantity;
 		this.beanQuantity = beanQuantity;
 		this.cornQuantity = cornQuantity;
 		this.shop = shop;
+		this.season = season;
 	}
 
-	public Buyer(String name, int riceQuantity, int beanQuantity, int cornQuantity, Boolean isFirstTurn, Shop shop) {
+	public Buyer(String name, int riceQuantity, int beanQuantity, int cornQuantity, Boolean isFirstTurn,
+			Shop shop,
+			Season season) {
 		this.name = name;
 		this.riceQuantity = riceQuantity;
 		this.beanQuantity = beanQuantity;
 		this.cornQuantity = cornQuantity;
 		this.isFirstTurn = isFirstTurn;
 		this.shop = shop;
+		this.season = season;
 	}
 
 	public void run() {
 		try {
 			if (isFirstTurn) {
-				synchronized (shop.fill) {
-					shop.fill.wait();
+				synchronized (shop.open) {
+					shop.open.wait();
 				}
 			} else {
 				synchronized (shop.turn) {
@@ -39,6 +44,12 @@ public class Buyer extends Thread {
 			System.out.println("");
 			showList();
 			buy();
+			shop.sales++;
+			if (shop.sales == 4) {
+				season.changeSeason();
+				System.out.println("Cambio de estación: " + season.getSeason());
+				shop.sales = 0;
+			}
 			showContainers();
 			System.out.println("");
 			synchronized (shop.turn) {
@@ -57,8 +68,9 @@ public class Buyer extends Thread {
 			try {
 				synchronized (shop.fill) {
 					shop.fill.notifyAll();
-					shop.shouldFill = true;
-					shop.fill.wait();
+				}
+				synchronized (shop.open) {
+					shop.open.wait();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

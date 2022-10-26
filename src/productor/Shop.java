@@ -7,7 +7,7 @@ public class Shop {
 	Object fill = new Object();
 	Object open = new Object();
 	Object turn = new Object();
-	Boolean shouldFill = true;
+	int sales = 0;
 
 	public Shop(Container riceCtn, Container beanCtn, Container cornCtn) {
 		riceContainer = riceCtn;
@@ -19,7 +19,7 @@ public class Shop {
 
 	}
 
-	public void addProduct(String product, int quantity) {
+	public void addProduct(String product, double quantity) {
 		Container container = getContainer(product);
 		if (container.products < 10) {
 			container.products += quantity;
