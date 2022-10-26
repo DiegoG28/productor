@@ -57,6 +57,7 @@ public class Buyer extends Thread {
 			try {
 				synchronized (shop.fill) {
 					shop.fill.notifyAll();
+					shop.shouldFill = true;
 					shop.fill.wait();
 				}
 			} catch (Exception e) {

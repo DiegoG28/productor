@@ -22,15 +22,22 @@ public class Producer extends Thread {
 		this.latch = latch;
 	}
 
-	public synchronized void run() {
+	public void run() {
 		while (true) {
-			latch.lock();
-			fill();
-			latch.unlock();
-			try {
-				sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			while (shop.shouldFill) {
+				latch.lock();
+				fill();
+				latch.unlock();
+				try {
+					sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				try {
+					sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -43,6 +50,7 @@ public class Producer extends Thread {
 		synchronized (shop.fill) {
 			if (shop.areContainersFull()) {
 				shop.fill.notify();
+				shop.shouldFill = false;
 			}
 		}
 	}

@@ -7,6 +7,7 @@ public class Shop {
 	Object fill = new Object();
 	Object open = new Object();
 	Object turn = new Object();
+	Boolean shouldFill = true;
 
 	public Shop(Container riceCtn, Container beanCtn, Container cornCtn) {
 		riceContainer = riceCtn;
